@@ -6,23 +6,7 @@ var moment = require('moment');
 
 router.route('/devices')
 
-	// create a bear (accessed at POST http://localhost:8080/bears)
-	/*.post(function(req, res) {
-
-		var bear = new Bear();		// create a new instance of the Bear model
-		bear.name = req.body.name;  // set the bears name (comes from the request)
-
-		bear.save(function(err) {
-			if (err)
-				res.send(err);
-
-			res.json({ message: 'Bear created!' });
-		});
-
-	})*/
-
-	// get all the bears (accessed at GET http://localhost:8080/api/bears)
-	.get(function(req, res) {
+   .get(function(req, res) {
 		var mac    = req.query.mac;
 		var option = req.query.option;
 		var mdate  = req.query.mdate;
@@ -44,34 +28,16 @@ router.route('/devices/:mac')
 		});
 	})
 
-	// update the bear with this id
+	// update the data with this id
 	.put(function(req, res) {
-		/*Bear.findById(req.params.bear_id, function(err, bear) {
-
-			if (err)
-				res.send(err);
-
-			bear.name = req.body.name;
-			bear.save(function(err) {
-				if (err)
-					res.send(err);
-
-				res.json({ message: 'Bear updated!' });
-			});
-
-		});*/
+		 var mac = req.params.mac;
+		//To update devices by mac
 	})
 
 	// delete the bear with this id
 	.delete(function(req, res) {
-		/*Bear.remove({
-			_id: req.params.bear_id
-		}, function(err, bear) {
-			if (err)
-				res.send(err);
-
-			res.json({ message: 'Successfully deleted' });
-		});*/
+        var mac = req.params.mac;
+		//To delete devices by mac
 	});
 
 module.exports = router;
