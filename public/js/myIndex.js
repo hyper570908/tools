@@ -10,7 +10,7 @@ function toSecondTable(mac){
     console.log("mac :"+mac);
     var now = new Date();
     var date = (now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() );
-    document.location.href="/devices?mac="+mac;
+    document.location.href="/devices?mac="+mac+'&date='+date;
 }
 
 $(document).ready(function(){

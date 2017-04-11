@@ -13,8 +13,6 @@ module.exports = function(app) {
   app.get('/', function (req, res) {
   	    var now = new Date().getTime();
 	    var finalList = JsonFileTools.getJsonFromFile(path);
-		var testObj = JsonFileTools.getJsonFromFile(path2);
-		test = testObj.test;
 		var keys = Object.keys(finalList);
 		for(var i=0;i<keys.length ;i++){
 			console.log(i+' timestamp : '+ finalList[keys[i]].timestamp);
@@ -22,13 +20,14 @@ module.exports = function(app) {
 			//finalList[keys[i]].overtime = false;
 			if( ((now - finalList[keys[i]].timestamp)/hour) > 6 )  {
 				finalList[keys[i]].overtime = false;
+			}else{
+				finalList[keys[i]].overtime = true;
 			}
 		}
 		res.render('index', { title: '首頁',
 			success: req.flash('success').toString(),
 			error: req.flash('error').toString(),
-			finalList:finalList,
-			test:test
+			finalList:finalList
 		});
   });
 
@@ -42,8 +41,7 @@ module.exports = function(app) {
 			res.render('update', { title: '更新',
 				device: device,
 				success: req.flash('success').toString(),
-				error: req.flash('error').toString(),
-				test:test
+				error: req.flash('error').toString()
 			});
 		});
   });

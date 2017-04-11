@@ -8,7 +8,6 @@ var deviceSchema = new Schema({
   data: { type: String},
   recv: { type: Date},
   date: { type: String},
-  date: { type: String},
   info: { type: Schema.Types.Mixed}
 });
 
