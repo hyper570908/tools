@@ -3,7 +3,7 @@ module.exports = {
   db: 'demo',
   host: 'localhost',
   port: 27017,
-  myport: 1884,
+  myport: 1883,
   mytopic:'mqtt',
   gIotHost:'52.193.146.103',
   gIotPort: 80,

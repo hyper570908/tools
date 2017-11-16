@@ -10,10 +10,11 @@ exports.saveDeviceMsg = function (obj,callback) {
     console.log(now + ' Debug : saveDeviceMsg');
 
     var newDevice = new DeviceModel({
-        macAddr    : obj.mac,
+        macAddr    : obj.macAddr,
         data       : obj.data,
         recv       : obj.recv,
         date       : obj.date,
+        timestamp  : obj.timestamp,
         info       : obj.information
     });
 

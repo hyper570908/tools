@@ -1,7 +1,9 @@
-<% if(test){ %>
+<% if (test === 1) { %>
 	<%- include extend/header %>
-<% }else{ %>
+<% } if (test === 2) { %>
 	<%- include extend/myHeader %>
+<% } else if (test === 3) { %>
+	<%- include extend/sb_header %>
 <% } %>
 <form method="post">
 
@@ -26,8 +28,11 @@
 	<% }); %>
 	</table>
 <% } %>
-<% if(test){ %>
+
+<% if(test === 1){ %>
 	<%- include extend/footer %>
-<% }else{ %>
+<% } if (test === 2) { %>
 	<%- include extend/myFooter %>
+<% } else if (test === 3){ %>
+	<%- include extend/sb_footer %>
 <% } %>

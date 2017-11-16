@@ -6,44 +6,46 @@ var JsonFileTools =  require('../models/jsonFileTools.js');
 var path = './public/data/finalList.json';
 var path2 = './public/data/test.json';
 var hour = 60*60*1000;
-var test = false;
+var test = true;
 
 
 module.exports = function(app) {
   app.get('/', function (req, res) {
-  	    var now = new Date().getTime();
-	    var finalList = JsonFileTools.getJsonFromFile(path);
-		var keys = Object.keys(finalList);
-		for(var i=0;i<keys.length ;i++){
-			console.log(i+' timestamp : '+ finalList[keys[i]].timestamp);
-			console.log(i+' result : '+ ((now - finalList[keys[i]].timestamp)/hour));
-			//finalList[keys[i]].overtime = false;
-			if( ((now - finalList[keys[i]].timestamp)/hour) > 6 )  {
-				finalList[keys[i]].overtime = false;
-			}else{
-				finalList[keys[i]].overtime = true;
-			}
+	var testObj = JsonFileTools.getJsonFromFile(path2);
+	test = testObj.test;
+	var now = new Date().getTime();
+	var finalList = JsonFileTools.getJsonFromFile(path);
+	var keys = Object.keys(finalList);
+	for(var i=0;i<keys.length ;i++){
+		console.log(i+' timestamp : '+ finalList[keys[i]].timestamp);
+		console.log(i+' result : '+ ((now - finalList[keys[i]].timestamp)/hour));
+		//finalList[keys[i]].overtime = false;
+		if( ((now - finalList[keys[i]].timestamp)/hour) > 6 )  {
+			finalList[keys[i]].overtime = false;
+		}else{
+			finalList[keys[i]].overtime = true;
 		}
-		res.render('index', { title: '首頁',
-			success: req.flash('success').toString(),
-			error: req.flash('error').toString(),
-			finalList:finalList
-		});
+	}
+	res.render('index', { 
+		title: '首頁',
+		finalList:finalList,
+		test: test
+	});
   });
 
   app.get('/update', function (req, res) {
-	    var testObj = JsonFileTools.getJsonFromFile(path2);
-		test = testObj.test;
-		DeviceModel.findOne({}, {}, { sort: { 'created_at' : -1 } }, function(err, device) {
-			//console.log( "last record : "+device );
-			console.log( "Find last record" );
-			
-			res.render('update', { title: '更新',
-				device: device,
-				success: req.flash('success').toString(),
-				error: req.flash('error').toString()
-			});
+	var testObj = JsonFileTools.getJsonFromFile(path2);
+	test = testObj.test;
+	DeviceModel.findOne({}, {}, { sort: { 'created_at' : -1 } }, function(err, device) {
+		//console.log( "last record : "+device );
+		console.log( "Find last record" );
+		
+		res.render('update', { 
+			title: '更新',
+			device: device,
+			test: test
 		});
+	});
   });
 
   app.get('/find', function (req, res) {
@@ -73,10 +75,9 @@ module.exports = function(app) {
 			if (devices.length>0) {
 				console.log('find '+devices.length+' records');
 				successMessae = '找到'+devices.length+'筆資料';
-				res.render('find', { title: '查詢',
+				res.render('find', { 
+					title: '查詢',
 					devices: devices,
-					success: successMessae,
-					error: errorMessae,
 					test:test
 				});
 			}else{
@@ -89,10 +90,9 @@ module.exports = function(app) {
     	});
 	}else{
 		console.log('find_name.length=0');
-		res.render('find', { title: '查詢',
+		res.render('find', { 
+			title: '查詢',
 			devices: null,
-			success: successMessae,
-			error: errorMessae,
 			test:test
 	  });
 	}

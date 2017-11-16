@@ -12,39 +12,16 @@ function init(){
 
 init();
 
-exports.parseMsg = function (msg) {
-    if(getType(msg) === 'array'){
-        obj = msg[0];
-        console.log('msg array[0] :'+JSON.stringify(obj));
-    }else if(getType(msg) != 'object'){
-        try {
-			obj = JSON.parse(msg.toString());
-		}
-		catch (e) {
-			console.log('msgTools parse json error message #### drop :'+e.toString());
-			return null;
-		}
-    }else{
-        obj = msg;
-    }
+exports.parseMsg = function (obj) {
     //Get data attributes
     mData = obj.data;
     mMac  = obj.macAddr;
-    if(obj.recv){
-        mRecv = obj.recv;
-    }else
-    {
-        mRecv = obj.time;
-    }
-    
+    mRecv = obj.recv;
     mDate = moment(mRecv).format('YYYY/MM/DD HH:mm:ss');
     mTimestamp = new Date(mRecv).getTime();
-    delete obj.data;
-    delete obj.macAddr;
-    delete obj.time;
-    mInfo = obj;
-
-    var msg = {mac:mMac,data:mData,recv:mRecv,date:mDate,information:mInfo,timestamp:mTimestamp};
+    mInfo = parseData(obj.data);
+    var msg = {macAddr: mMac, data: mData, recv: mRecv, date: mDate,
+                information: mInfo, timestamp: mTimestamp};
     finalList[mMac]=msg;
     return msg;
 }
@@ -58,17 +35,8 @@ exports.getFinalList = function () {
 }
 
 exports.saveFinalListToFile = function () {
-    /*var json = JSON.stringify(finalList);
-    fs.writeFile(path, json, 'utf8');*/
     JsonFileTools.saveJsonToFile(path,finalList);
 }
-
-
-
-/*function parseDefineMessage(data){
-   var mInfo = ParseDefine.getInformation(data);
-   return mInfo;
-}*/
 
 function getType(p) {
     if (Array.isArray(p)) return 'array';
@@ -77,3 +45,27 @@ function getType(p) {
     else return 'other';
 }
 
+function parseData(data) {
+    var info = {};
+    var obj = { 'temperature':[0,4,100], 'humidity':[4,8,100]};
+    var keys = Object.keys(obj);
+    var count = keys.length;
+
+    for(var i =0;i<count;i++){
+        console.log( keys[i]+' : '+ obj[keys[i]]);
+        info[ keys[i] ] = getIntData(obj[keys[i]],data);
+    }
+    return info;
+}
+
+function getIntData(arrRange,data){
+    var ret = {};
+    var start = arrRange[0];
+    var end = arrRange[1];
+    var diff = arrRange[2];
+    var intData = parseInt(data.substring(start,end),16);
+    if(diff === 1)
+        return intData;
+    else
+        return intData/diff;
+}

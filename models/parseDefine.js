@@ -23,20 +23,7 @@ function getTypeData(data,type){
     var keys = Object.keys(obj);
     var count = keys.length;
 
-    /*var mPressure = data.substring(6,10);
-    var mHight = data.substring(10,14);    　//氣壓
-    var mTemperature = data.substring(14,16);   //溫度
-    var mHumidity = data.substring(16,18);      //濕度
-    var mLight = data.substring(18,22);         //照明
-    console.log('mPressure : '+mPressure);
-    console.log('mHight : '+mHight);
-    console.log('mTemperature : '+mTemperature);
-    console.log('mHumidity : '+mHumidity);
-    console.log('mLight : '+mLight);
-    console.log( 'obj : '+ JSON.stringify(obj) );
-    console.log( 'keys : '+ JSON.stringify(keys) );*/
     for(var i =0;i<count;i++){
-        //console.log( keys[i]+' : '+ obj[keys[i]]);
         info[ keys[i] ] = getIntData(obj[keys[i]],data);
     }
     return info;
