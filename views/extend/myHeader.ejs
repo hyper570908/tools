@@ -48,7 +48,11 @@
     <script type="text/javascript" src="/vendor/JSCal2-1.7/js/jscal2.js"></script>
     <script type="text/javascript" src="/vendor/JSCal2-1.7/js/lang/b5.js"></script>
     <!-- Self-define -->
-    <script type="text/javascript" src="js/myIndex.js" ></script>
+    <% if(title === '首頁') { %>
+        <script type="text/javascript" src="js/myIndex.js" ></script>
+    <% } else if(title === '裝置列表') { %>
+        <script type="text/javascript" src="js/myDevice.js" ></script>
+    <% } %>
 
 </head>
 <body>
@@ -78,15 +82,22 @@ font-size: 16px;"> Last access : 30 May 2014 &nbsp; <a href="#" class="btn btn-d
 
                     <li >
                         <% if(title ==='首頁'){ %>
-                            <a class="active-menu" href="/"><i class="fa fa-dashboard fa-3x"></i> 首頁</a></li>
+                            <a class="active-menu" href="/"><i class="fa fa-dashboard fa-2x"></i> 首頁</a></li>
                         <% }else{ %>
-                            <a  href="/"><i class="fa fa-dashboard fa-3x"></i> 首頁</a></li>
+                            <a  href="/"><i class="fa fa-dashboard fa-2x"></i> 首頁</a></li>
                         <% } %>
                     <li>
                         <% if(title ==='更新'){ %>
-                            <a class="active-menu" href="/update"><i class="fa fa-desktop fa-3x"></i> 更新</a></li>
+                            <a class="active-menu" href="/update"><i class="fa fa-desktop fa-2x"></i> 更新</a></li>
                         <% }else{ %>
-                            <a  href="/update"><i class="fa fa-desktop fa-3x"></i> 更新</a></li>
+                            <a  href="/update"><i class="fa fa-desktop fa-2x"></i> 更新</a></li>
+                        <% } %>
+                    </li>
+                    <li>
+                        <% if(title ==='查詢'){ %>
+                            <a class="active-menu" href="/find"><i class="fa fa-search fa-2x"></i> 查詢</a></li>
+                        <% }else{ %>
+                            <a  href="/find"><i class="fa fa-search fa-2x"></i> 查詢</a></li>
                         <% } %>
                     </li>
                     <!--<li>

@@ -63,7 +63,12 @@
     <script type="text/javascript" src="/vendor/JSCal2-1.7/js/jscal2.js"></script>
     <script type="text/javascript" src="/vendor/JSCal2-1.7/js/lang/b5.js"></script>
     <!-- Self-define -->
-    <script type="text/javascript" src="js/myIndex.js" ></script>
+    <% if(title === '最新資訊') { %>
+        <script type="text/javascript" src="js/myIndex.js" ></script>
+    <% } else if(title === '裝置列表') { %>
+        <script type="text/javascript" src="js/myDevice.js" ></script>
+    <% } %>
+    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -98,10 +103,7 @@
                             <a href="/"><i class="fa fa-dashboard fa-fw"></i> 首頁</a>
                         </li>
                         <li>
-                            <a href="/update"><i class="fa fa-cloud-download fa-fw"></i> 更新</a>
-                        </li>
-                        <li>
-                            <a href="/find"><i class="fa fa-search fa-fw"></i> 查詢</a>
+                            <a href="/finalList"><i class="fa fa-cloud-download fa-fw"></i> 最新資訊</a>
                         </li>
                     </ul>
                 </div>

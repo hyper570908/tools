@@ -9,7 +9,7 @@ var deviceSchema = new Schema({
   recv: { type: Date},
   date: { type: String},
   timestamp: { type: Number},
-  info: { type: Schema.Types.Mixed}
+  information: { type: Schema.Types.Mixed}
 });
 
 // the schema is useless so far

@@ -15,7 +15,7 @@ exports.saveDeviceMsg = function (obj,callback) {
         recv       : obj.recv,
         date       : obj.date,
         timestamp  : obj.timestamp,
-        info       : obj.information
+        information: obj.information
     });
 
     console.log('$$$$ DeviceModel : '+JSON.stringify(newDevice));
@@ -179,17 +179,32 @@ exports.findDevicesByDate = function (dateStr,mac,dateOption,order,calllback) {
             return calllback(err);
         } else {
             console.log('Debug :findDevice success\n:',Devices.length);
-            var mDevices = [];
+            console.log('Before sort : first device \n:',JSON.stringify(Devices[0]));
+            console.log('Before sort : last device \n:',JSON.stringify(Devices[Devices.length-1]));
+            var devices = [];
             if(order == 'asc' && Devices.length>0){
-               for(var i= (Devices.length-1);i>-1 ;i--){
-                   mDevices.push(Devices[i]);
-               }
-               return calllback(err,mDevices);
+               devices = Devices.sort(dynamicSort('-date'));
+            } else {
+               devices = Devices.sort(dynamicSort('date'));
             }
+            console.log('After sort : first device \n:',JSON.stringify(devices[0]));
+            console.log('After sort : last device \n:',JSON.stringify(devices[Devices.length-1]));
             return calllback(err,Devices);
         }
     });
 };
+
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
 
 exports.getOptioDeviceList = function (devices,option) {
     var diff = 1;

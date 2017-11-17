@@ -5,6 +5,7 @@ var mData,mMac,mRecv,mDate,mTimestamp,mType,mExtra ;
 var obj;
 var path = './public/data/finalList.json';
 var finalList = {};
+var debug = false;
 
 function init(){
     finalList = JsonFileTools.getJsonFromFile(path);
@@ -16,6 +17,9 @@ exports.parseMsg = function (obj) {
     //Get data attributes
     mData = obj.data;
     mMac  = obj.macAddr;
+    if(mMac !== '05010326') {
+        return null;
+    }
     mRecv = obj.recv;
     mDate = moment(mRecv).format('YYYY/MM/DD HH:mm:ss');
     mTimestamp = new Date(mRecv).getTime();
@@ -23,6 +27,7 @@ exports.parseMsg = function (obj) {
     var msg = {macAddr: mMac, data: mData, recv: mRecv, date: mDate,
                 information: mInfo, timestamp: mTimestamp};
     finalList[mMac]=msg;
+    saveFinalListToFile ();
     return msg;
 }
 
@@ -34,9 +39,11 @@ exports.getFinalList = function () {
     return finalList;
 }
 
-exports.saveFinalListToFile = function () {
+
+function saveFinalListToFile () {
     JsonFileTools.saveJsonToFile(path,finalList);
 }
+exports.saveFinalListToFile = saveFinalListToFile;
 
 function getType(p) {
     if (Array.isArray(p)) return 'array';
@@ -68,4 +75,47 @@ function getIntData(arrRange,data){
         return intData;
     else
         return intData/diff;
+}
+
+exports.getTabledata = getTabledata;
+
+function getTabledata(lists) {
+    var rows = 0;
+    var mItem = 1;
+    var array = [];
+    console.log( 'Last Device Information \n '+JSON.stringify( lists[lists.length-1]));
+
+    for (var i=0;i<lists.length;i++)
+    {
+        array.push(getArray(lists[i],mItem));
+        
+        mItem++;
+        if(debug){
+            console.log( i + ': ' + JSON.stringify(array[i]) );
+            break;
+        }
+    }
+    var dataString = JSON.stringify(array);
+    if(array.length===0){
+        node.warn('empty array');
+        dataString =null;
+    }
+    return dataString;
+}
+
+function getArray(obj,item){
+    var arr = [];
+    if(item<10){
+        arr.push('0'+item);
+    }else{
+        arr.push(item.toString());
+    }
+    
+    arr.push(obj.date);
+    arr.push(obj.data);
+    var keys = Object.keys(obj.information);
+    for (var i = 0;i < keys.length; i++) {
+        arr.push(obj.information[keys[i]]);
+    }
+    return arr ;
 }

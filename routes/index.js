@@ -11,41 +11,45 @@ var test = true;
 
 module.exports = function(app) {
   app.get('/', function (req, res) {
-	var testObj = JsonFileTools.getJsonFromFile(path2);
-	test = testObj.test;
-	var now = new Date().getTime();
-	var finalList = JsonFileTools.getJsonFromFile(path);
-	var keys = Object.keys(finalList);
-	for(var i=0;i<keys.length ;i++){
-		console.log(i+' timestamp : '+ finalList[keys[i]].timestamp);
-		console.log(i+' result : '+ ((now - finalList[keys[i]].timestamp)/hour));
-		//finalList[keys[i]].overtime = false;
-		if( ((now - finalList[keys[i]].timestamp)/hour) > 6 )  {
-			finalList[keys[i]].overtime = false;
-		}else{
-			finalList[keys[i]].overtime = true;
+		var testObj = JsonFileTools.getJsonFromFile(path2);
+		test = testObj.test;
+		var now = new Date().getTime();
+		var finalList = JsonFileTools.getJsonFromFile(path);
+		var keys = Object.keys(finalList);
+		for(var i=0;i<keys.length ;i++){
+			console.log(i+' timestamp : '+ finalList[keys[i]].timestamp);
+			console.log(i+' result : '+ ((now - finalList[keys[i]].timestamp)/hour));
+			//finalList[keys[i]].overtime = false;
+			if( ((now - finalList[keys[i]].timestamp)/hour) > 6 )  {
+				finalList[keys[i]].overtime = false;
+			}else{
+				finalList[keys[i]].overtime = true;
+			}
 		}
-	}
-	res.render('index', { 
-		title: '首頁',
-		finalList:finalList,
-		test: test
-	});
+		res.render('index', { 
+			title: '首頁',
+			finalList:finalList,
+			test: test
+		});
   });
 
   app.get('/update', function (req, res) {
-	var testObj = JsonFileTools.getJsonFromFile(path2);
-	test = testObj.test;
-	DeviceModel.findOne({}, {}, { sort: { 'created_at' : -1 } }, function(err, device) {
-		//console.log( "last record : "+device );
-		console.log( "Find last record" );
+		var finalList = JsonFileTools.getJsonFromFile(path);
+		var keys = Object.keys(finalList);
+		var testObj = JsonFileTools.getJsonFromFile(path2);
+		var device = null;
+		test = testObj.test;
+		if( keys.length > 0) {
+			console.log(keys[0]);
+		  console.log(finalList[keys[0]]);
+			device = finalList[keys[0]];
+		}
 		
 		res.render('update', { 
 			title: '更新',
 			device: device,
 			test: test
 		});
-	});
   });
 
   app.get('/find', function (req, res) {
@@ -97,13 +101,49 @@ module.exports = function(app) {
 	  });
 	}
 
-
   });
   app.post('/find', function (req, res) {
-	var	 post_mac = req.body.mac;
+		var	 post_mac = req.body.mac;
+		console.log('find mac:'+post_mac);
+		req.flash('mac', post_mac);
+		return res.redirect('/find');
+  });
 
-	console.log('find mac:'+post_mac);
-	req.flash('mac', post_mac);
-	return res.redirect('/find');
+  // Jason add on 2017.11.16 
+  app.get('/finalList', function (req, res) {
+		var testObj = JsonFileTools.getJsonFromFile(path2);
+		test = testObj.test;
+		var now = new Date().getTime();
+		var finalList = JsonFileTools.getJsonFromFile(path);
+		var keys = Object.keys(finalList);
+		for(var i=0;i<keys.length ;i++){
+			console.log(i+' timestamp : '+ finalList[keys[i]].timestamp);
+			console.log(i+' result : '+ ((now - finalList[keys[i]].timestamp)/hour));
+			//finalList[keys[i]].overtime = false;
+			if( ((now - finalList[keys[i]].timestamp)/hour) > 6 )  {
+				finalList[keys[i]].overtime = false;
+			}else{
+				finalList[keys[i]].overtime = true;
+			}
+		}
+		res.render('finalList', { 
+			title: '最新資訊',
+			finalList:finalList,
+			test: test
+		});
+  });
+
+	app.get('/devices', function (req, res) {
+		var	mac = req.query.mac;
+		var	date = req.query.date;
+		var testObj = JsonFileTools.getJsonFromFile(path2);
+		test = testObj.test;
+		
+		res.render('devices', { 
+			title: '裝置列表',
+			mac:mac,
+			date: date,
+			test: test
+		});
   });
 };

@@ -19,7 +19,7 @@ $(document).ready(function(){
         var row=table.fnGetData(this);
         toSecondTable(row[1]);
 
-    });    
+    });
 
 });
 
