@@ -1,16 +1,13 @@
 ﻿
-<% if (test === 1) { %>
-	<%- include extend/header %>
-<% } if (test === 2) { %>
-	<%- include extend/myHeader %>
-<% } else if (test === 3) { %>
-	<%- include extend/sb_header %>
-<% } %>
+<%- include extend/sb_header %>
+
 	這是首頁
-<% if(test === 1){ %>
-	<%- include extend/footer %>
-<% } if (test === 2) { %>
-	<%- include extend/myFooter %>
-<% } else if (test === 3){ %>
-	<%- include extend/sb_footer %>
-<% } %>
+    <!-- /.row -->
+    
+    <!--<div class="row">
+        <div class="col-lg-12">
+            <iframe src="http://localhost:3000/ui/#/0" width="100%" height="650" frameborder="1" scrolling="no"></iframe>
+        </div>
+    </div>-->
+    <!-- /.row -->
+<%- include extend/sb_footer %>

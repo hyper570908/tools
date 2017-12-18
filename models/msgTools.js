@@ -4,8 +4,8 @@ var JsonFileTools =  require('./jsonFileTools.js');
 var mData,mMac,mRecv,mDate,mTimestamp,mType,mExtra ;
 var obj;
 var path = './public/data/finalList.json';
+var path2 = './public/data/setting.json';
 var finalList = {};
-var debug = false;
 
 function init(){
     finalList = JsonFileTools.getJsonFromFile(path);
@@ -13,7 +13,7 @@ function init(){
 
 init();
 
-exports.parseMsg = function (obj) {
+function parseMsg (obj) {
     //Get data attributes
     mData = obj.data;
     mMac  = obj.macAddr;
@@ -31,19 +31,31 @@ exports.parseMsg = function (obj) {
     return msg;
 }
 
-exports.setFinalList = function (list) {
+function setFinalList (list) {
     finalList = list;
 }
 
-exports.getFinalList = function () {
+function getFinalList () {
     return finalList;
 }
 
+function setFinalList (list) {
+    finalList = list;
+}
+
+function getSetting () {
+    try {
+        var setting = JsonFileTools.getJsonFromFile(path2);
+    }
+    catch (e) {
+        var setting = {};
+    }
+    return setting;
+}
 
 function saveFinalListToFile () {
     JsonFileTools.saveJsonToFile(path,finalList);
 }
-exports.saveFinalListToFile = saveFinalListToFile;
 
 function getType(p) {
     if (Array.isArray(p)) return 'array';
@@ -65,7 +77,7 @@ function parseData(data) {
     return info;
 }
 
-function getIntData(arrRange,data){
+function getIntData (arrRange,data){
     var ret = {};
     var start = arrRange[0];
     var end = arrRange[1];
@@ -77,9 +89,7 @@ function getIntData(arrRange,data){
         return intData/diff;
 }
 
-exports.getTabledata = getTabledata;
-
-function getTabledata(lists) {
+function getTabledata (lists) {
     var rows = 0;
     var mItem = 1;
     var array = [];
@@ -90,20 +100,11 @@ function getTabledata(lists) {
         array.push(getArray(lists[i],mItem));
         
         mItem++;
-        if(debug){
-            console.log( i + ': ' + JSON.stringify(array[i]) );
-            break;
-        }
     }
-    var dataString = JSON.stringify(array);
-    if(array.length===0){
-        node.warn('empty array');
-        dataString =null;
-    }
-    return dataString;
+    return array;
 }
 
-function getArray(obj,item){
+function getArray (obj,item){
     var arr = [];
     if(item<10){
         arr.push('0'+item);
@@ -118,4 +119,26 @@ function getArray(obj,item){
         arr.push(obj.information[keys[i]]);
     }
     return arr ;
+}
+
+function saveSetting (max, callback) {
+    var json = {tempMax : Number(max)};
+    try {
+        JsonFileTools.saveJsonToFile(path2, json);
+    }
+    catch (e) {
+        return callback(e.message);
+
+    }
+    return callback(null,'ok');
+}
+
+module.exports = {
+    parseMsg,
+    setFinalList,
+    saveFinalListToFile,
+    getFinalList,
+	saveSetting,
+    getTabledata,
+    getSetting
 }

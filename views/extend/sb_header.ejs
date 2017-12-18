@@ -20,6 +20,9 @@
     <!-- Custom CSS -->
     <link href="css/sb-admin-2.css" rel="stylesheet">
 
+    <!-- Morris Charts CSS -->
+    <link href="vendor/morrisjs/morris.css" rel="stylesheet">
+
     <!-- Custom Fonts -->
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
@@ -32,43 +35,6 @@
 
     <!--  JSCal2-1.7-->
     <link href="/vendor/JSCal2-1.7/css/jscal2.css" type="text/css" rel="stylesheet"/>
-
-    <!-- jQuery -->
-    <script src="js/jquery-1.12.4.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="vendor/metisMenu/metisMenu.min.js"></script>
-
-    <!-- JQUERY DataTables-->
-    <script type="text/javascript" src="vendor/DataTables-1.10.13/media/js/jquery.dataTables.min.js"></script>
-    <!-- Button DataTables-->
-    <script type="text/javascript" src="vendor/DataTables-1.10.13/extensions/Buttons/js/dataTables.buttons.min.js"></script>
-     <!-- Button DataTables-->
-    <script type="text/javascript" src="vendor/DataTables-1.10.13/extensions/Buttons/js/buttons.flash.min.js"></script>
-    <!-- JZIP -->
-    <script type="text/javascript" src="vendor\DataTables-1.10.13\jszip.min.js"></script>
-    <!-- PDF MAKE -->
-    <script type="text/javascript" src="vendor\DataTables-1.10.13\pdfmake.min.js"></script>
-    <!-- VFS FONT -->
-    <script type="text/javascript" src="vendor\DataTables-1.10.13\vfs_fonts.js"></script>
-    <!-- BUTTON HTML5 -->
-    <script type="text/javascript" src="/js/bootstrap-waitingfor.min.js"></script>
-    <!-- WAITING DIALOG -->
-    <script type="text/javascript" src="vendor/DataTables-1.10.13/extensions/Buttons/js/buttons.html5.min.js"></script>
-    <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
-    <!--  JSCal2-1.7-->
-    <script type="text/javascript" src="/vendor/JSCal2-1.7/js/jscal2.js"></script>
-    <script type="text/javascript" src="/vendor/JSCal2-1.7/js/lang/b5.js"></script>
-    <!-- Self-define -->
-    <% if(title === '最新資訊') { %>
-        <script type="text/javascript" src="js/myIndex.js" ></script>
-    <% } else if(title === '裝置列表') { %>
-        <script type="text/javascript" src="js/myDevice.js" ></script>
-    <% } %>
-    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -92,7 +58,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">正文科技Lora展示</a>
+                <a class="navbar-brand" href="/">正文科技Lora展示</a>
             </div>
             <!-- /.navbar-header -->
 
@@ -103,7 +69,16 @@
                             <a href="/"><i class="fa fa-dashboard fa-fw"></i> 首頁</a>
                         </li>
                         <li>
+                            <a href="/update"><i class="fa fa-desktop fa-fw"></i> 更新</a>
+                        </li>
+                        <li>
+                            <a href="/find"><i class="fa fa-dashboard fa-fw"></i> 查詢</a>
+                        </li>
+                        <!--<li>
                             <a href="/finalList"><i class="fa fa-cloud-download fa-fw"></i> 最新資訊</a>
+                        </li>-->
+                        <li>
+                            <a href="/setting"><i class="fa fa-pencil fa-fw"></i> 設定</a>
                         </li>
                     </ul>
                 </div>
@@ -115,6 +90,12 @@
         <!-- Page Content -->
         <div id="page-wrapper">
             <div class="container-fluid">
+                <!--<div class="row">
+                    <div class="col-lg-12">-->
                 <div class="row">
                     <div class="col-lg-12">
+                        <h1 class="page-header"><%= title %></h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
 

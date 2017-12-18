@@ -1,6 +1,6 @@
 ﻿var express = require('express');
 var router = express.Router();
-var DeviceModel = require('../models/device.js');
+var Device = require('../models/device.js');
 var settings = require('../settings');
 var JsonFileTools =  require('../models/jsonFileTools.js');
 var path = './public/data/finalList.json';
@@ -15,20 +15,11 @@ module.exports = function(app) {
 		test = testObj.test;
 		var now = new Date().getTime();
 		var finalList = JsonFileTools.getJsonFromFile(path);
-		var keys = Object.keys(finalList);
-		for(var i=0;i<keys.length ;i++){
-			console.log(i+' timestamp : '+ finalList[keys[i]].timestamp);
-			console.log(i+' result : '+ ((now - finalList[keys[i]].timestamp)/hour));
-			//finalList[keys[i]].overtime = false;
-			if( ((now - finalList[keys[i]].timestamp)/hour) > 6 )  {
-				finalList[keys[i]].overtime = false;
-			}else{
-				finalList[keys[i]].overtime = true;
-			}
-		}
+		var device = finalList['05010326'];
+		
 		res.render('index', { 
 			title: '首頁',
-			finalList:finalList,
+			device: device,
 			test: test
 		});
   });
@@ -63,7 +54,7 @@ module.exports = function(app) {
 
 	if(find_mac.length>0){
 		console.log('find_mac.length>0');
-		DeviceModel.find({ macAddr: find_mac }, function(err,devices){
+		Device.findByMac(find_mac , function(err,devices){
 			if(err){
 				console.log('find name:'+find_mac);
 				req.flash('error', err);
@@ -72,7 +63,7 @@ module.exports = function(app) {
 			console.log("find all of mac "+find_mac+" : "+devices);
 			devices.forEach(function(device) {
 
-				console.log('mac:'+device.macAddr + ', data :' +device.data);
+				console.log('mac:'+device.macAddr + ', information :' + JSON.stringify(device.information));
 				count = count +1;
 			});
 
@@ -109,6 +100,12 @@ module.exports = function(app) {
 		return res.redirect('/find');
   });
 
+  app.get('/setting', function (req, res) {
+		res.render('setting', { 
+			title: '設定'
+		});
+  });
+
   // Jason add on 2017.11.16 
   app.get('/finalList', function (req, res) {
 		var testObj = JsonFileTools.getJsonFromFile(path2);
@@ -133,7 +130,7 @@ module.exports = function(app) {
 		});
   });
 
-	app.get('/devices', function (req, res) {
+  app.get('/devices', function (req, res) {
 		var	mac = req.query.mac;
 		var	date = req.query.date;
 		var testObj = JsonFileTools.getJsonFromFile(path2);

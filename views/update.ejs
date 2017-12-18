@@ -1,10 +1,5 @@
-<% if (test === 1) { %>
-	<%- include extend/header %>
-<% } if (test === 2) { %>
-	<%- include extend/myHeader %>
-<% } else if (test === 3) { %>
-	<%- include extend/sb_header %>
-<% } %>
+<%- include extend/sb_header %>
+
 	<meta http-equiv="refresh" content="5;url=http://localhost:3000/update">
 	更新時間:<%=new Date() %>
 
@@ -23,10 +18,6 @@
 			</tr>
 		<% } %>
 	</table>
-<% if(test === 1){ %>
-	<%- include extend/footer %>
-<% } if (test === 2) { %>
-	<%- include extend/myFooter %>
-<% } else if (test === 3){ %>
-	<%- include extend/sb_footer %>
-<% } %>
+	<!--<iframe src="http://localhost:3000/ui/#/0" width="100%" height="650" frameborder="1" scrolling="no"></iframe>-->
+
+<%- include extend/sb_footer %>

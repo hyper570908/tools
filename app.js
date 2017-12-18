@@ -4,9 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var todos = require('./routes/todos');//Jason add on 2016.09.26
+var api = require('./routes/api');//Jason add on 2016.09.26
 var routes = require('./routes/index');
-var todos = require('./routes/todos');//Jason add on 2017.02.21
+var api = require('./routes/api');//Jason add on 2017.02.21
 //Jason add on 2017.02.16 - start
 var RED = require("node-red");
 var http = require('http'),
@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/todos', todos);
+app.use('/api', api);
 app.use(session({
   secret: settings.cookieSecret,
   key: settings.db,//cookie name
@@ -37,7 +37,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
-app.use('/todos', todos);
+app.use('/api', api);
 routes(app);
 var server = http.createServer(app);
 
@@ -48,7 +48,7 @@ var setting = {
     userDir:"./.nodered/",
     functionGlobalContext: {
       momentModule:require("moment"),
-      deviceDbTools:require("./models/deviceDbTools.js"),
+      deviceDbTools:require("./models/device.js"),
       msgTools:require("./models/msgTools.js")
     }    // enables global context
 };

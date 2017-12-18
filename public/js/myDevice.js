@@ -17,15 +17,19 @@ ws = new WebSocket(wsUri);
         console.log("from-node-red : id:"+msg.id);
         if(msg.id === 'change_table'){
             //Remove init button active
+            console.log("addData type : "+ typeof(msg.v));
             console.log("v : "+msg.v);
 
             //Reload table data
-            //console.log("v type:"+typeof(msg.v));
+            console.log("v type:"+typeof(msg.v));
             table = $('#table1').dataTable();
             table.fnClearTable();
-            var data = JSON.parse(msg.v);
-            console.log("addData type : "+ typeof(data)+" : "+data);
-            if(data){
+            var data = msg.v;
+            if (typeof(msg.v) !== 'object') {
+                data = JSON.parse(msg.v);
+            }
+
+            if(data && data.length > 0){
                 table.fnAddData(data);
                 table.$('tr').click(function() {
                 var row=table.fnGetData(this);
@@ -46,7 +50,7 @@ ws = new WebSocket(wsUri);
         var date  = document.getElementById("date").value;;
         console.log('date :'+ date);
         connected = true;
-        var obj = {"id":"init","v":mac};
+        var obj = {"id":"init","v":{mac: mac, date: date}};
         var getRequest = JSON.stringify(obj);
         console.log("getRequest type : "+ typeof(getRequest)+" : "+getRequest);
         console.log("ws.onopen : "+ getRequest);
