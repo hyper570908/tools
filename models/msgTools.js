@@ -5,7 +5,11 @@ var mData,mMac,mRecv,mDate,mTimestamp,mType,mExtra ;
 var obj;
 var path = './public/data/finalList.json';
 var path2 = './public/data/setting.json';
+var userPath = './public/data/user.json';
 var finalList = {};
+var linebot = require('linebot');
+var settings = require('../settings');
+
 
 function init(){
     finalList = JsonFileTools.getJsonFromFile(path);
@@ -133,6 +137,24 @@ function saveSetting (max, callback) {
     return callback(null,'ok');
 }
 
+function sendLineMessage (msg) {
+    var bot = linebot({
+        channelId: settings.channelId,
+        channelSecret: settings.channelSecret,
+        channelAccessToken: settings.channelAccessToken
+    });
+    var user = JsonFileTools.getJsonFromFile(userPath);
+    if (user.friend.length > 0) {
+        bot.multicast(user.friend, msg).then(function (data) {
+            // success 
+            console.log('push line :' + JSON.stringify(data));
+        }).catch(function (error) {
+            // error 
+            console.log('push line error :' + error);
+        });
+    }
+}
+
 module.exports = {
     parseMsg,
     setFinalList,
@@ -140,5 +162,6 @@ module.exports = {
     getFinalList,
 	saveSetting,
     getTabledata,
-    getSetting
+    getSetting,
+    sendLineMessage
 }
