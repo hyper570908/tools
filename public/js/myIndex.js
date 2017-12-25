@@ -11,13 +11,7 @@ var opt={"oLanguage":{"sProcessing":"處理中...",
                         "sPrevious":"上頁",
                         "sNext":"下頁",
                         "sLast":"尾頁"}
-            },dom: 'Blrtip',
-            buttons: [
-                'copyHtml5',
-                //'excelHtml5',
-                //'pdfHtml5'
-                'csvHtml5'
-            ]
+            },dom: 'rtip'
     };
 var opt2={
      "order": [[ 2, "desc" ]],
@@ -26,17 +20,69 @@ var opt2={
 
 function toSecondTable(mac){
     console.log("mac :"+mac);
+    var myDate = getNowDate();
+    var myTime = getNowTime();
+    var date = document.getElementById("date").value;
+    if ( date === '') {
+        date = myDate + ' ' + myTime;
+    } else if (date === myDate) {
+        date = myDate + ' ' + myTime;
+    } else {
+        date = date + '23:59:59';
+    }
+    var option = document.getElementById("option").value;
+    
+    document.location.href="/devices?mac=" + mac + '&date=' + date + '&option=' + option;
+}
+
+function getNowDate() {
     var now = new Date();
-    var date = (now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() );
-    date = date + ' ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
-    document.location.href="/devices?mac="+mac+'&date='+date;
+    var year = now.getFullYear();
+    var month = now.getMonth() + 1;
+    var day = now.getDate();
+    if (month < 10) {
+        month = '0' + month;
+    }
+    if (day < 10) {
+        day = '0' + day;
+    }
+    return year + '/' + month + '/' + day;
+}
+
+function getNowTime() {
+    var now = new Date();
+    var hour = now.getHours();
+    var minute = now.getMinutes();
+    var second = now.getSeconds();
+    if (hour < 10) {
+        hour = '0' + hour;
+    }
+    if (minute < 10) {
+        minute = '0' + minute;
+    }
+    if (second  < 10) {
+        second  = '0' + second ;
+    }
+    return hour + ':' + minute + ':' + second; 
 }
 
 $(document).ready(function(){
-    var table = $("#table1").dataTable(opt2);
+    new Calendar({
+        inputField: "date",
+        dateFormat: "%Y/%m/%d",
+        trigger: "BTN",
+        bottomBar: true,
+        weekNumbers: true,
+        showTime: false,
+        onSelect: function() {this.hide();}
+    });
+    var table = $("#table1").dataTable(opt);
     table.$('tr').click(function() {
         var row=table.fnGetData(this);
         toSecondTable(row[1]);
     });
+    var now = new Date();
+    var nowDate = (now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate() );
+    document.getElementById("date").value = nowDate;
 });
 

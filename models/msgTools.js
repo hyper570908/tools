@@ -12,7 +12,16 @@ var settings = require('../settings');
 
 
 function init(){
-    finalList = JsonFileTools.getJsonFromFile(path);
+    try{
+        finalList = JsonFileTools.getJsonFromFile(path);
+    } catch(e) {
+        console.log('Get finalList error : ' + e);
+        finalList = {};
+        JsonFileTools.saveJsonToFile(path, finalList);
+    }
+    if (finalList === null) {
+        finalList = {};
+    }
 }
 
 init();

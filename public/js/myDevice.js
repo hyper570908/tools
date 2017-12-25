@@ -47,10 +47,11 @@ ws = new WebSocket(wsUri);
     ws.onopen = function() {
 
         var mac = document.getElementById("mac").value;
-        var date  = document.getElementById("date").value;;
+        var date  = document.getElementById("date").value;
+        var option  = document.getElementById("option").value;;
         console.log('date :'+ date);
         connected = true;
-        var obj = {"id":"init","v":{mac: mac, date: date}};
+        var obj = {"id":"init", "v": {mac: mac, date: date, option: option}};
         var getRequest = JSON.stringify(obj);
         console.log("getRequest type : "+ typeof(getRequest)+" : "+getRequest);
         console.log("ws.onopen : "+ getRequest);

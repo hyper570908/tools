@@ -8,10 +8,28 @@
 	<% if(finalList === null){ %>
 		這是首頁,找不到資料
 	<% }else{ %>
+		<!-- Select Date -->
+		<div class="col-md-3">
+			<label>選擇日期</label>
+			<input type="text" id="date" name="date" size="10" readonly>
+			<input type="button" value="..." id="BTN" name="BTN">
+		</div>
+
+		<!-- Select Range -->
+		<div class="col-md-9">
+			<label>查詢範圍</label>
+			<select "selected_time" id="option" name="option">
+				<option value="0" selected>一天</option>
+				<option value="1">一周</option>
+				<option value="2">一月</option>
+			</select>
+		</div> <!-- col-md-3 -->
+		<br>
+		<hr>
 
 		<% var keys = Object.keys(finalList); %>
-
-		<table id="table1"  class="display" cellspacing="0" width="100%">
+		<div class="col-md-12">
+			<table id="table1"  class="display" cellspacing="0" width="100%">
 		<thead>
 			<tr style="color:#428bca">
 			<th>項目</th>
@@ -39,9 +57,11 @@
 					</td>
 				</tr>
 			<% } %>
-
 		</tbody>
 	</table>
+		</div>
+
+		
 
 	<% } %>
 

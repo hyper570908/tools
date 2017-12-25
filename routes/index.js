@@ -14,10 +14,24 @@ module.exports = function(app) {
 		var testObj = JsonFileTools.getJsonFromFile(path2);
 		test = testObj.test;
 		var now = new Date().getTime();
-		var finalList = JsonFileTools.getJsonFromFile(path);
-		var device = finalList['05010326'];
-		
-		res.render('index', { 
+		var device = null,
+			finalList = null;
+		try{
+	        finalList = JsonFileTools.getJsonFromFile(path);
+	    } catch(e) {
+	        console.log('Get finalList error : ' + e);
+	        finalList = {};
+	        JsonFileTools.saveJsonToFile(path, finalList);
+	    }
+	    if (finalList === null) {
+	        finalList = {};
+	    }
+
+		var keys = Object.keys(finalList);
+		if (keys.length > 0) {
+			device = finalList[keys[0]];
+		}
+		res.render('index', {
 			title: '首頁',
 			device: device,
 			test: test
@@ -35,8 +49,8 @@ module.exports = function(app) {
 		  console.log(finalList[keys[0]]);
 			device = finalList[keys[0]];
 		}
-		
-		res.render('update', { 
+
+		res.render('update', {
 			title: '更新',
 			device: device,
 			test: test
@@ -70,7 +84,7 @@ module.exports = function(app) {
 			if (devices.length>0) {
 				console.log('find '+devices.length+' records');
 				successMessae = '找到'+devices.length+'筆資料';
-				res.render('find', { 
+				res.render('find', {
 					title: '查詢',
 					devices: devices,
 					test:test
@@ -85,7 +99,7 @@ module.exports = function(app) {
     	});
 	}else{
 		console.log('find_name.length=0');
-		res.render('find', { 
+		res.render('find', {
 			title: '查詢',
 			devices: null,
 			test:test
@@ -101,12 +115,12 @@ module.exports = function(app) {
   });
 
   app.get('/setting', function (req, res) {
-		res.render('setting', { 
+		res.render('setting', {
 			title: '設定'
 		});
   });
 
-  // Jason add on 2017.11.16 
+  // Jason add on 2017.11.16
   app.get('/finalList', function (req, res) {
 		var testObj = JsonFileTools.getJsonFromFile(path2);
 		test = testObj.test;
@@ -123,7 +137,7 @@ module.exports = function(app) {
 				finalList[keys[i]].overtime = true;
 			}
 		}
-		res.render('finalList', { 
+		res.render('finalList', {
 			title: '最新資訊',
 			finalList:finalList,
 			test: test
@@ -133,14 +147,16 @@ module.exports = function(app) {
   app.get('/devices', function (req, res) {
 		var	mac = req.query.mac;
 		var	date = req.query.date;
+		var	option = req.query.option;
 		var testObj = JsonFileTools.getJsonFromFile(path2);
 		test = testObj.test;
-		
-		res.render('devices', { 
+
+		res.render('devices', {
 			title: '裝置列表',
 			mac:mac,
 			date: date,
-			test: test
+			test: test,
+			option
 		});
   });
 };
