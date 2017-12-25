@@ -125,18 +125,24 @@ module.exports = function(app) {
 		var testObj = JsonFileTools.getJsonFromFile(path2);
 		test = testObj.test;
 		var now = new Date().getTime();
-		var finalList = JsonFileTools.getJsonFromFile(path);
+		var device = null,
+			finalList = null;
+		try{
+	        finalList = JsonFileTools.getJsonFromFile(path);
+	    } catch(e) {
+	        console.log('Get finalList error : ' + e);
+	        finalList = {};
+	        JsonFileTools.saveJsonToFile(path, finalList);
+	    }
+	    if (finalList === null) {
+	        finalList = {};
+	    }
+
 		var keys = Object.keys(finalList);
-		for(var i=0;i<keys.length ;i++){
-			console.log(i+' timestamp : '+ finalList[keys[i]].timestamp);
-			console.log(i+' result : '+ ((now - finalList[keys[i]].timestamp)/hour));
-			//finalList[keys[i]].overtime = false;
-			if( ((now - finalList[keys[i]].timestamp)/hour) > 6 )  {
-				finalList[keys[i]].overtime = false;
-			}else{
-				finalList[keys[i]].overtime = true;
-			}
+		if (keys.length > 0) {
+			device = finalList[keys[0]];
 		}
+		
 		res.render('finalList', {
 			title: '最新資訊',
 			finalList:finalList,
